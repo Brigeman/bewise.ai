@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 import requests
 import datetime as dt  # Переименовано для избежания конфликта с datetime из стандартной библиотеки
+from decouple import config
 
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker
@@ -13,7 +14,8 @@ import logging
 # Настройка логгера
 logging.basicConfig(level=logging.DEBUG)
 
-DATABASE_URL = "postgresql://postgres:!QAZ2wsx@bewiseai-db-1/db_questions"
+DATABASE_URL = f"postgresql://{config('POSTGRES_USER')}:{config('POSTGRES_PASSWORD')}@bewiseai-db-1/{config('POSTGRES_DB')}"
+
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
